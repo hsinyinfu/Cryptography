@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 import random
-import sys
 
 def isPrime( target, faultRateDenominator ):
     """ Test if the "target" is prime or composite.
