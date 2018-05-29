@@ -5,7 +5,7 @@ def isPrime( target, faultRateDenominator ):
     """ Test if the "target" is prime or composite.
 
     Args:
-        target: The number to be tested if it is a prime.
+        target: The positive integer(>1) to be tested if it is a prime.
         faultRateDenominator: if input is x, then the fault rate is 1/x.
 
     Return:
@@ -39,7 +39,7 @@ def Miller_Rabin_Test( target , base ):
     """ Test whether the target is prime or composite by base.
 
     Args:
-        target: The number to be tested if it is a prime or not.
+        target: The positive integer(>1) to be tested if it is a prime or not.
         base: A Miller-Rabin witness or nonwitness for target
     Return:
         True: target "may" be a prime, and "base" is the nonwitness for target.
@@ -150,12 +150,41 @@ if __name__ == '__main__':
         mode = input('Please select a mode: ')
 
         if mode == '0':
-            print('[ Start to verify a number ]')
-            target = int(input('< Enter a number to be tested if it is a prime or not: >\n'))
-            denominator = int(input('< Enter the denominator of fault rate: >\n'))
+            print('[ Start to verify a number. ]')
+
+
+            # Prevent user from giving 0, a negative number or a floating number.
+            try:
+                target = int(input('< Enter a positive integer(>1) to be tested if it is a prime or not: >\n'))
+            except:
+                print('[ Please enter a positive integer! ]')
+                print('[ The program is rebooting... ]\n')
+                continue
+
+            if not target > 1:
+                print('[ Please input a positive integer! ]')
+                print('[ The program is rebooting... ]\n')
+                continue
+
+            try:
+                denominator = int(input('< Enter the denominator(positive ' + 
+                    'integer) of fault rate: >\n'))
+            except:
+                print('[ Please enter a positive integer! ]')
+                print('[ The program is rebooting... ]\n')
+                continue
+
+            if not denominator > 0:
+                print('[ Please input a positive integer! ]')
+                print('[ The program is rebooting... ]\n')
+                continue
         
+
             if target % 2 == 0:
-                print('This is an even number, so it must be a composite number.')
+                if target == 2:
+                    print('This is a prime number.\n')
+                else:
+                    print('This is an even number, so it must be a composite number.\n')
         
             else:
                 witnesses, results, rounds = isPrime( target, denominator )
@@ -163,14 +192,30 @@ if __name__ == '__main__':
                     print('The {0} round: result is \"{1}\", {2} is {3}'.format(i,\
                         results[i], "nonwitness" if results[i] else "witness", witnesses[i]))
                     print('----------')
-                print('To sum up, the number you input is a {} number.'\
+                print('To sum up, the number you input is a {} number.\n'\
                         .format('composite' if False in results else 'prime'))
 
         elif mode == '1':
             print('[ Start to generate a prime ]')
-            denominator = int(input('< Enter the denominator of fault rate: >\n'))
+
+
+            # Prevent user from giving 0, a negative number or a floating number.
+            try:
+                denominator = int(input('< Enter the denominator(positive ' + 
+                    'integer) of fault rate: >\n'))
+            except:
+                print('[ Please enter a positive integer! ]')
+                print('[ The program is rebooting... ]\n')
+                continue
+
+            if not denominator > 0:
+                print('[ Please input a positive integer! ]')
+                print('[ The program is rebooting... ]\n')
+                continue
+
+
             prime = generatePrime( denominator )
-            print('The 512-btis prime generated for you is:\n{}'.format(prime))
+            print('The 512-btis prime generated for you is:\n{}\n'.format(prime))
 
         elif mode == 'exit':
             print('[ The program is going to be shut down ]')
